@@ -1,45 +1,24 @@
 package ac2
 
-// 有限状态机
-func myAtoi(s string) int {
-	table := map[string][]string{
-		"start":  {"start", "signed", "number", "end"},
-		"signed": {"end", "end", "number", "end"},
-		"number": {"end", "end", "number", "end"},
-		"end":    {"end", "end", "end", "end"},
-	}
+import (
+	"strconv"
+)
 
-	var ans int64 = 0
-	sign := 1
-	status := "start"
+func reverse(x int) int {
+	isPositive := 1
+	if x < 0 {
+		isPositive = -1
+		x = -x
+	}
+	s := strconv.FormatInt(int64(x), 10)
 	l := len(s)
+	ansString := make([]byte, l)
 	for i := 0; i < l; i++ {
-		status = table[status][getCol(s[i])]
-		if status == "signed" && s[i] == '-' {
-			sign = -1
-		} else if status == "number" {
-			ans = ans*10 + int64(s[i]-'0')
-			if sign == 1 && ans > 1<<31-1 {
-				ans = 1<<31 - 1
-				break
-			} else if sign == -1 && ans > 1<<31 {
-				ans = 1 << 31
-				break
-			}
-		} else if status == "end" {
-			break
-		}
+		ansString[i] = s[l-i-1]
 	}
-	return int(ans) * sign
-}
-
-func getCol(c byte) int {
-	if c == ' ' {
-		return 0
-	} else if c == '+' || c == '-' {
-		return 1
-	} else if c >= '0' && c <= '9' {
-		return 2
+	ans, _ := strconv.ParseInt(string(ansString), 10, 64)
+	if ans < -1<<31 || ans > 1<<31-1 {
+		ans = 0
 	}
-	return 3
+	return int(ans) * isPositive
 }

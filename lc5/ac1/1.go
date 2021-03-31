@@ -1,28 +1,38 @@
 package ac1
 
-// 暴力。每2n-2个分为一组
-func convert(s string, numRows int) string {
-	if numRows == 1 {
-		return s
-	}
+// 动态规划
+// 设dp[i][j]表示s[i,j]为回文串，则状态转移方程为
+// dp[i][j] = dp[i+1][j-1] && (s[i] == s[j])
+// 边际条件为
+// dp[i][i] = true
+// dp[i][i+1] = s[i] == s[i+1]
+func longestPalindrome(s string) string {
 	l := len(s)
-	ans := make([]byte, l)
-	count := 0
-	group := 2*numRows - 2
-	for i := 0; i < numRows; i++ {
-		for j := 0; ; j++ {
-			id1 := i + group*j
-			id2 := id1 + 2*(numRows-1-i)
-			if id1 >= l {
-				break
+	if l == 0 {
+		return ""
+	}
+	dp := make([][]bool, l)
+	for i := 0; i < l; i++ {
+		dp[i] = make([]bool, l)
+	}
+	palindromeLen := 1
+	start, end := 0, 0
+	for k := 0; k < l; k++ {
+		for i := 0; i+k < l; i++ {
+			j := i + k
+			if i == j {
+				dp[i][j] = true
+			} else if j == i+1 {
+				dp[i][j] = s[i] == s[j]
+			} else {
+				dp[i][j] = dp[i+1][j-1] && s[i] == s[j]
 			}
-			ans[count] = s[id1]
-			count++
-			if i != 0 && i != numRows-1 && id2 > 0 && id2 < l { // 第一行或最后一行
-				ans[count] = s[id2]
-				count++
+			if dp[i][j] && j-i+1 > palindromeLen {
+				palindromeLen = j - i + 1
+				start = i
+				end = j
 			}
 		}
 	}
-	return string(ans)
+	return s[start : end+1]
 }
