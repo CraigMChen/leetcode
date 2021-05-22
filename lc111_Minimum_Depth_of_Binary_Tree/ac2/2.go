@@ -6,6 +6,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+// 递归
 func minDepth(root *TreeNode) int {
 	if root == nil {
 		return 0
