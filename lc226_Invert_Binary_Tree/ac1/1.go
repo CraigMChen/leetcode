@@ -6,6 +6,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+// 递归
 func invertTree(root *TreeNode) *TreeNode {
 	if root == nil {
 		return nil
