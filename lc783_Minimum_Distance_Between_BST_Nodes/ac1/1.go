@@ -8,8 +8,8 @@ type TreeNode struct {
 
 // 中序遍历
 // BST的中序遍历结果是非递减序列，最相近的两个值一定相邻
-// 与lc783相同
-func getMinimumDifference(root *TreeNode) int {
+// 与lc530相同
+func minDiffInBST(root *TreeNode) int {
 	ans := 1 << 31 - 1
 	var (
 		inorder func(root *TreeNode)
