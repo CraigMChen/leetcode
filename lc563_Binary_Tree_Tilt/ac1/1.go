@@ -6,6 +6,8 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+// 递归
+// 递归求出各子树中所有节点的和，分别将左右子树的差的绝对值累加
 func findTilt(root *TreeNode) int {
 	var (
 		ans int
