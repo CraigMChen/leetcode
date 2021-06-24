@@ -33,7 +33,7 @@ func findMode(root *TreeNode) []int {
 		}
 	}
 
-	// 中序遍历
+	// Morris中序遍历
 	for curNode != nil {
 		if curNode.Left == nil { // 如果当前节点的左子树为空，则没有前驱节点，直接遍历，并进入右子树
 			update(curNode.Val)
@@ -46,7 +46,7 @@ func findMode(root *TreeNode) []int {
 		for preNode.Right != nil && preNode.Right != curNode {
 			preNode = preNode.Right
 		}
-		if preNode.Right == nil { // 满足该条件说明 当前找到了当前节点的前驱节点
+		if preNode.Right == nil { // 满足该条件说明 找到了当前节点的前驱节点
 			preNode.Right = curNode // 则把前驱节点的右子树置为当前节点，这样遍历完这个前驱节点之后就可以直接遍历到当前节点，不需要占空间
 			curNode = curNode.Left // 继续中序遍历
 		} else { // 否则，当前节点的前驱节点已经找过了，不需要再遍历左子树
