@@ -6,10 +6,11 @@ type TreeNode struct {
 }
 
 // 迭代
-func inorderTraversal(root *TreeNode) []int {
+func postorderTraversal(root *TreeNode) []int {
 	var (
 		ans []int
 		stack []*TreeNode
+		prev *TreeNode
 	)
 	for root != nil || len(stack) != 0 {
 		for root != nil {
@@ -18,8 +19,14 @@ func inorderTraversal(root *TreeNode) []int {
 		}
 		root = stack[len(stack) - 1]
 		stack = stack[:len(stack) - 1]
-		ans = append(ans, root.Val)
-		root = root.Right
+		if root.Right == nil || root.Right == prev {
+			ans = append(ans, root.Val)
+			prev = root
+			root = nil
+		} else {
+			stack = append(stack, root)
+			root = root.Right
+		}
 	}
 	return ans
 }
