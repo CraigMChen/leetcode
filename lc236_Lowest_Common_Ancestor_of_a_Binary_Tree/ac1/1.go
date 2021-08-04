@@ -7,6 +7,9 @@ type TreeNode struct {
 }
 
 // 深搜
+// 设f(x)为true表示以x为根节点的子树中包含p或q节点；为false表示没有
+// 则x为p和q的最近公共祖先的条件为
+// f(x.Left) && f(x.Right) || (x == p || x == q) && (f(x.Left) || f(x.Right))
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 	var (
 		ans *TreeNode
