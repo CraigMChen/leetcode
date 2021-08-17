@@ -51,6 +51,8 @@ type NestedIterator struct {
 	res []int
 }
 
+// Constructor
+// 递归
 func Constructor(nestedList []*NestedInteger) *NestedIterator {
 	var (
 		res []int
