@@ -19,6 +19,8 @@ func Constructor() Codec {
 }
 
 // 深搜
+// 保存前序遍历结果（用"x"表示空节点，保存所有空节点的信息），用","分隔
+// 数字直接转成字符串
 func (this *Codec) serialize(root *TreeNode) string {
 	var (
 		arr []string
@@ -26,7 +28,7 @@ func (this *Codec) serialize(root *TreeNode) string {
 	)
 	dfs = func(node *TreeNode) {
 		if node == nil {
-			arr = append(arr, "null")
+			arr = append(arr, "x")
 			return
 		}
 		arr = append(arr, strconv.FormatInt(int64(node.Val), 10))
@@ -42,7 +44,7 @@ func (this *Codec) deserialize(data string) *TreeNode {
 	i := 0
 	var build func() *TreeNode
 	build = func() *TreeNode {
-		if arr[i] == "null" || i >= len(arr) {
+		if arr[i] == "x" || i >= len(arr) {
 			i++
 			return nil
 		}
