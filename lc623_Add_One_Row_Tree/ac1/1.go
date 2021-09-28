@@ -6,7 +6,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-// 递归
+// 递归 深搜
 func addOneRow(root *TreeNode, val int, depth int) *TreeNode {
 	if depth == 1 {
 		return &TreeNode{
@@ -14,30 +14,27 @@ func addOneRow(root *TreeNode, val int, depth int) *TreeNode {
 			Left: root,
 		}
 	}
-	var dfs func(node, father *TreeNode, isRight bool, cur int)
-	dfs = func(node, father *TreeNode, isRight bool, cur int) {
-		if node == nil && father == nil {
+	var dfs func(node *TreeNode, cur int)
+	dfs = func(node *TreeNode, cur int) {
+		if node == nil {
 			return
 		}
-		if cur == depth {
-			if isRight {
-				father.Right = &TreeNode{
-					Val:   val,
-					Right: node,
-				}
-			} else {
-				father.Left = &TreeNode{
-					Val:  val,
-					Left: node,
-				}
+		if cur == depth-1 {
+			right := node.Right
+			left := node.Left
+			node.Right = &TreeNode{
+				Val:   val,
+				Right: right,
+			}
+			node.Left = &TreeNode{
+				Val:  val,
+				Left: left,
 			}
 			return
 		}
-		if node != nil {
-			dfs(node.Left, node, false, cur+1)
-			dfs(node.Right, node, true, cur+1)
-		}
+		dfs(node.Right, cur+1)
+		dfs(node.Left, cur+1)
 	}
-	dfs(root, nil, false, 1)
+	dfs(root, 1)
 	return root
 }
