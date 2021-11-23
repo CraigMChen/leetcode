@@ -5,7 +5,7 @@ package ac1
 // dp[0] = nums[0]
 // dp[1] = max(nums[0], nums[1])
 // dp[i] = max(nums[i-2]+nums[i], nums[i-1)
-// dp[len(nums)-1] 即为答案
+// dp[len(nums)-1] 即为最终结果
 func rob(nums []int) int {
 	if len(nums) == 1 {
 		return nums[0]
