@@ -6,14 +6,31 @@ package ac1
 // 则G(i) = G(i - 1) * G(n - i)
 // G(0) = 1
 // G(1) = 1
-func numTrees(n int) int {
-	nums := []int{1, 1, 2}
-	for i := 3; i <= 19; i++ {
-		count := 0
+//func numTrees(n int) int {
+//	nums := []int{1, 1}
+//	for i := 2; i <= n; i++ {
+//		count := 0
+//		for j := 1; j <= i; j++ {
+//			count += nums[j - 1] * nums[i - j]
+//		}
+//		nums = append(nums, count)
+//	}
+//	return nums[n]
+//}
+
+var nums []int
+
+func init() {
+	nums = make([]int, 20)
+	nums[0] = 1
+	nums[1] = 1
+	for i := 2; i <= 19; i++ {
 		for j := 1; j <= i; j++ {
-			count += nums[j - 1] * nums[i - j]
+			nums[i] += nums[j-1] * nums[i - j]
 		}
-		nums = append(nums, count)
 	}
+}
+
+func numTrees(n int) int {
 	return nums[n]
 }
