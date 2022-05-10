@@ -1,26 +1,25 @@
 package ac2
 
-// 贪心，二分
-// 设d[i]表示长度为i的最长上升子序列的结尾最小的数
+// 二分
+// 用数组 lis 表示 nums 的最长递增子序列
+// 对每个 nums[i] ，用二分查找找出能够在 lis 中插入的下标并替换
 func lengthOfLIS(nums []int) int {
-	var d []int
-	d = append(d, -1)
-	d = append(d, nums[0])
+	var lis []int
 	for i := 0; i < len(nums); i++ {
-		if nums[i] > d[len(d) - 1] {
-			d = append(d, nums[i])
-		} else {
-			l, r := 1, len(d)
-			for l < r {
-				m := (r - l) >> 1 + l
-				if d[m] < nums[i] {
-					l = m + 1
-				} else {
-					r = m
-				}
+		l, r := 0, len(lis)
+		for l < r {
+			m := (r-l)>>1 + l
+			if lis[m] < nums[i] {
+				l = m + 1
+			} else {
+				r = m
 			}
-			d[l] = nums[i]
+		}
+		if l == len(lis) {
+			lis = append(lis, nums[i])
+		} else {
+			lis[l] = nums[i]
 		}
 	}
-	return len(d) - 1
+	return len(lis)
 }
