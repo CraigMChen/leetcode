@@ -3,6 +3,7 @@ package ac1
 const maxInt = int(^uint(0) >> 1)
 
 // 二分查找
+// 用动态规划的方法判断子序列，类似 lc392
 func maximumRemovals(s string, p string, removable []int) int {
 	removed := make([]int, len(s)+1)
 	for i := 0; i < len(removed); i++ {
