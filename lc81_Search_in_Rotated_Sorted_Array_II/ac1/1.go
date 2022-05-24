@@ -5,11 +5,11 @@ func search(nums []int, target int) bool {
 	l, r := 0, len(nums)
 	for l < r {
 		m := (r-l)>>1 + l
-		if nums[m] == target || nums[l] == target || nums[r-1] == target {
+		if nums[m] == target {
 			return true
-		} else if nums[m] == nums[l] {
+		}
+		if nums[l] == nums[m] && nums[m] == nums[r] {
 			l++
-		} else if nums[m] == nums[r-1] {
 			r--
 		} else if nums[m] <= nums[r-1] {
 			if target > nums[m] && target <= nums[r-1] {
@@ -18,15 +18,12 @@ func search(nums []int, target int) bool {
 				r = m
 			}
 		} else {
-			if target >= nums[l] && target < nums[m] {
+			if target >= nums[l] && m > 0 && target <= nums[m-1] {
 				r = m
 			} else {
 				l = m + 1
 			}
 		}
 	}
-	if l == len(nums) || nums[l] != target {
-		return false
-	}
-	return true
+	return false
 }
