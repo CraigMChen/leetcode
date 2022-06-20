@@ -5,24 +5,24 @@ package ac1
 // 则对于所有[1, target)都满足count[i] <= i
 // 对于所有[target, n - 1]都满足count[i] > i
 // 则可以进行二分搜索，复杂度为O(nlogn)
-
 func findDuplicate(nums []int) int {
-	l, r := 0, len(nums)
-	ans := -1
-	for l < r {
-		m := (r - l) >> 1 + l
+	getCount := func(m int) int {
 		count := 0
 		for i := 0; i < len(nums); i++ {
 			if nums[i] <= m {
 				count++
 			}
 		}
-		if count <= m {
-			l = m + 1
-		} else {
-			ans = m
+		return count
+	}
+	l, r := 1, len(nums)
+	for l < r {
+		m := (r-l)>>1 + l
+		if getCount(m) > m {
 			r = m
+		} else {
+			l = m + 1
 		}
 	}
-	return ans
+	return l
 }
