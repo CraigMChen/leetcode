@@ -2,29 +2,35 @@ package ac1
 
 // 二分查找
 func minSpeedOnTime(dist []int, hour float64) int {
-	getTime := func(speed int) float64 {
-		res := float64(0)
+	getHour := func(m int) float64 {
+		hour := 0.0
 		for i := 0; i < len(dist); i++ {
-			if i < len(dist)-1 {
-				res += float64((dist[i]-1)/speed + 1)
+			if i == len(dist)-1 {
+				hour += float64(dist[i]) / float64(m)
 			} else {
-				res += float64(dist[i]) / float64(speed)
+				hour += float64((dist[i]-1)/m + 1)
 			}
 		}
-		return res
+		return hour
 	}
 
-	var l, r int = 1, 1e7 + 1
+	max := 0
+	for i := 0; i < len(dist); i++ {
+		if dist[i] > max {
+			max = dist[i]
+		}
+	}
+	var l, r = 1, max*100 + 1 // 由于hour最多只有2位小数，所以上限是最大值*100
 	for l < r {
-		m := (r-l)/2 + l
-		if getTime(m) <= hour {
+		m := (r-l)>>1 + l
+		if getHour(m) <= hour {
 			r = m
 		} else {
 			l = m + 1
 		}
 	}
-	if l == 1e7+1 {
-		l = -1
+	if l == max*100+1 {
+		return -1
 	}
 	return l
 }
