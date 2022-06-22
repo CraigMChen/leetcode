@@ -8,7 +8,7 @@ const MOD int = 1e9 + 7
 // sum = |nums1[0]-nums2[0]| + ... + |nums1[n-1]-nums2[n-1]|
 // 用nums1[i]替换nums1[j]，得到的结果为
 // sum - |nums1[i]-nums2[i]| + |nums1[j]-nums2[i]|
-// 要使结果最大，只要后面部分最大即可，即求
+// 要使结果最小，只要后面部分最大即可，即求
 // max(|nums1[i]-nums2[i]| - |nums1[j]-nums2[i]|)
 // 对于每个i，用二分查找找出nums1中与nums2[i]最接近的元素
 func minAbsoluteSumDiff(nums1 []int, nums2 []int) int {
