@@ -16,7 +16,7 @@ func countNodes(root *TreeNode) int {
 		return 0
 	}
 	h := 0 // 树的深度
-	for tmp := root; tmp.Left != nil; tmp = tmp.Left {
+	for node := root; node.Left != nil; node = node.Left {
 		h++
 	}
 	if h == 0 { // 如果树的深度为0，说明只有根节点
@@ -24,29 +24,33 @@ func countNodes(root *TreeNode) int {
 	}
 
 	hasNode := func(k int) bool {
-		tmp := root
+		node := root
 		bits := 1 << (h - 1) // 从做到右，一次把每一位（除最高位外）取出
-		for tmp != nil && bits > 0 {
-			if k & bits == 0 { // 如果是0则向左走
-				tmp = tmp.Left
+		for node != nil && bits > 0 {
+			if k&bits == 0 { // 如果是0则向左走
+				node = node.Left
 			} else { // 否则向右走
-				tmp = tmp.Right
+				node = node.Right
 			}
+			// 下面这种写法是不对的
+			//if k & bits == 1 {
+			//	node = node.Right
+			//} else {
+			//	node = node.Left
+			//}
 			bits >>= 1
 		}
-		return tmp != nil
+		return node != nil
 	}
 
-	l, r := 1 << h, 1 << (h + 1) // 树的节点个数范围为[1<<h, 1<<(h+1))
-	ans := 0
+	l, r := 1<<h, 1<<(h+1) // 树的节点个数范围为[1<<h, 1<<(h+1))
 	for l < r {
-		m := (r - l) >> 1 + l
+		m := (r-l)>>1 + l
 		if hasNode(m) { // 相当于二分查找最小的不存在的节点数
-			ans = m // 答案就是最小的不存在的节点数-1，即最大的存在的节点数
 			l = m + 1
 		} else {
 			r = m
 		}
 	}
-	return ans // 或 return l - 1
+	return l - 1
 }
