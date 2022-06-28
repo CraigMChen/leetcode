@@ -8,7 +8,7 @@ func search(nums []int, target int) bool {
 		if nums[m] == target {
 			return true
 		}
-		if nums[l] == nums[m] && nums[m] == nums[r] {
+		if nums[l] == nums[m] && nums[m] == nums[r-1] {
 			l++
 			r--
 		} else if nums[m] <= nums[r-1] {
