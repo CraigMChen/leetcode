@@ -29,19 +29,22 @@ func rangeSum(nums []int, n int, left int, right int) int {
 	}
 
 	getCount := func(m int) int {
-		res := 0
-		for i, j := 0, 1; i < len(nums); i++ { // 双指针法求出 subSums 数组中 m 前面有多少个元素
-			for j <= len(nums) && preSum[j]-preSum[i] <= m {
+		// 双指针法求出 subSums 数组中 m 前面有多少个元素
+		count := 0
+		for i, j := 0, 1; i < len(preSum); i++ {
+			// preSum[j] - preSum[i] <= m 表明有 j-i 个子数组的和小于等于 m
+			for j < len(preSum) && preSum[j]-preSum[i] <= m {
 				j++
 			}
 			j--
-			res += j - i
+			count += j - i
 		}
-		return res
+		return count
 	}
-
 	getSum := func(k int) int {
-		l, r := 0, preSum[len(preSum)-1]+1 // 二分查找求出 sumSums 数组中第 k 个元素是多少
+		// 二分查找求出 subSums 数组中第 k 个元素是多少
+		// 找到第一个 m，使得 subNums 中小于等于 m 的元素至少有 k 个
+		l, r := 0, preSum[len(preSum)-1]
 		for l < r {
 			m := (r-l)>>1 + l
 			if getCount(m) >= k {
@@ -52,19 +55,20 @@ func rangeSum(nums []int, n int, left int, right int) int {
 		}
 		num := l
 
-		count := 0
-		sum := 0
-		for i, j := 0, 1; i < len(nums); i++ { // 双指针法求出严格小于 num 的区间 [i,j)
-			for j <= len(nums) && preSum[j]-preSum[i] < num {
+		sum, count := 0, 0
+		// 双指针法求出严格小于 num 的区间 [i,j)
+		for i, j := 0, 1; i < len(preSum); i++ {
+			for j < len(preSum) && preSum[j]-preSum[i] < num {
 				j++
 			}
 			j--
 			count += j - i
-			sum += prePreSum[j] - prePreSum[i] - preSum[i]*(j-i) // 对于每一对 [i,j)，求出其 subSums 的区间和
+			// 表达式 prePreSum[j] - prePreSum[i] - preSum[i] * (j-i) 的结果为数组 nums 区间 [i, j) 的所有元素组成子数组的和组成的数组的元素和
+			sum = (sum%MOD + (prePreSum[j]-prePreSum[i]-preSum[i]*(j-i))%MOD) % MOD
 		}
-
-		sum += num * (k - count) // 求出所有等于 num 的 subSums 的元素和
+		// 求出所有等于 num 的 subSums 的元素和
+		sum = (sum%MOD + ((k-count)*num)%MOD) % MOD
 		return sum
 	}
-	return (getSum(right) - getSum(left-1)) % MOD
+	return getSum(right) - getSum(left-1)
 }
