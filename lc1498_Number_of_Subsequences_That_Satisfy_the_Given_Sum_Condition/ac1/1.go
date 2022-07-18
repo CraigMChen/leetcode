@@ -35,7 +35,7 @@ func numSubseq(nums []int, target int) int {
 			}
 		}
 		if l != i {
-			res = (res + pow(2, l-i-1)) % MOD
+			res = (res + pow(2, l-i-1)) % MOD // nums[i] 必选，所以是 2^(l-i-1)
 		}
 	}
 	return res % MOD
