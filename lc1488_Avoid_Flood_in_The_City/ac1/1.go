@@ -8,35 +8,34 @@ package ac1
 // 如果有多余的晴天，则随意选择一个湖泊清空，赋为1即可
 func avoidFlood(rains []int) []int {
 	var (
-		clearDay []int
-		res      = make([]int, len(rains))
-		lastRain = make(map[int]int)
+		sunnyDays   []int
+		lastRainDay = make(map[int]int)
+		res         = make([]int, len(rains))
 	)
 	for i := 0; i < len(rains); i++ {
 		if rains[i] == 0 {
-			clearDay = append(clearDay, i+1)
+			sunnyDays = append(sunnyDays, i)
 			continue
 		}
 		res[i] = -1
-		last, ok := lastRain[rains[i]]
-		if !ok {
-			lastRain[rains[i]] = i + 1
+		if last, ok := lastRainDay[rains[i]]; !ok {
+			lastRainDay[rains[i]] = i
 		} else {
-			l, r := 0, len(clearDay)
+			l, r := 0, len(sunnyDays)
 			for l < r {
 				m := (r-l)>>1 + l
-				if clearDay[m] > last {
+				if sunnyDays[m] > last {
 					r = m
 				} else {
 					l = m + 1
 				}
 			}
-			if l >= len(clearDay) {
+			if l >= len(sunnyDays) {
 				return nil
 			}
-			res[clearDay[l]-1] = rains[i]
-			clearDay = append(clearDay[:l], clearDay[l+1:]...) // 这一步需要将用过的晴天从数组中移除，复杂度为O(n)
-			lastRain[rains[i]] = i + 1
+			res[sunnyDays[l]] = rains[i]
+			sunnyDays = append(sunnyDays[:l], sunnyDays[l+1:]...) // 这一步需要将用过的晴天从数组中移除，复杂度为O(n)
+			lastRainDay[rains[i]] = i
 		}
 	}
 	for i := 0; i < len(res); i++ {
