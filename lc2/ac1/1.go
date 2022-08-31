@@ -6,35 +6,28 @@ type ListNode struct {
 }
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	carry := 0
-	father := l1
-	ans := l1
-
-	for l1 != nil || l2 != nil {
-		if l2 == nil && carry == 0 {
-			break
-		}
+	var (
+		res    = l1
+		parent *ListNode
+		carry  = 0
+	)
+	for l1 != nil || l2 != nil || carry != 0 {
 		if l1 == nil {
 			l1 = new(ListNode)
-			father.Next = l1
+			parent.Next = l1
 		}
-		var sum int
+		add := 0
 		if l2 != nil {
-			sum = l1.Val + l2.Val + carry
-		} else {
-			sum = l1.Val + carry
+			add = l2.Val
 		}
-		l1.Val = sum % 10
-		carry = sum / 10
-		father = l1
+		sum := l1.Val + add + carry
+		carry, l1.Val = sum/10, sum%10
+
+		parent = l1
 		l1 = l1.Next
 		if l2 != nil {
 			l2 = l2.Next
 		}
 	}
-	if carry != 0 {
-		l1 = &ListNode{carry, nil}
-		father.Next = l1
-	}
-	return ans
+	return res
 }
