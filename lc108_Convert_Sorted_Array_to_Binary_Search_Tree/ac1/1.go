@@ -8,16 +8,13 @@ type TreeNode struct {
 
 // 递归
 func sortedArrayToBST(nums []int) *TreeNode {
-	var build func(left, right int) *TreeNode
-	build = func(left, right int) *TreeNode {
-		if left >= right {
-			return nil
-		}
-		mid := (right - left) >> 1 + left
-		root := &TreeNode{Val: nums[mid]}
-		root.Left = build(left, mid)
-		root.Right = build(mid + 1, right)
-		return root
+	if len(nums) <= 0 {
+		return nil
 	}
-	return build(0, len(nums))
+	mid := len(nums) / 2
+	return &TreeNode{
+		Val:   nums[mid],
+		Left:  sortedArrayToBST(nums[:mid]),
+		Right: sortedArrayToBST(nums[mid+1:]),
+	}
 }

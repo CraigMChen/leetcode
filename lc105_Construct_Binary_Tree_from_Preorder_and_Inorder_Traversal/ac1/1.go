@@ -13,20 +13,19 @@ type TreeNode struct {
 // 把问题分为两个子问题，不断递归下去
 // 递归终点是中序遍历或前序遍历结果为空
 func buildTree(preorder []int, inorder []int) *TreeNode {
-	if len(preorder) == 0 {
+	if len(preorder) <= 0 || len(inorder) <= 0 {
 		return nil
 	}
-
-	root := &TreeNode{Val: preorder[0]}
-	index := -1
-	for i := range inorder {
-		if inorder[i] == root.Val {
-			index = i
+	headIndex := 0
+	for i := 0; i < len(inorder); i++ {
+		if inorder[i] == preorder[0] {
+			headIndex = i
 			break
 		}
 	}
-
-	root.Left = buildTree(preorder[1:index + 1], inorder[:index])
-	root.Right = buildTree(preorder[index + 1:], inorder[index + 1:])
-	return root
+	return &TreeNode{
+		Val:   preorder[0],
+		Left:  buildTree(preorder[1:headIndex+1], inorder[:headIndex]),
+		Right: buildTree(preorder[headIndex+1:], inorder[headIndex+1:]),
+	}
 }
