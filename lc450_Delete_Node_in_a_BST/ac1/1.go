@@ -17,13 +17,13 @@ func deleteNode(root *TreeNode, key int) *TreeNode {
 		root.Left = deleteNode(root.Left, key)
 	} else {
 		if root.Right != nil { // 若节点右儿子非空
-			suc := successor(root) // 则找到它的前驱节点
-			root.Val = suc.Val // 将前驱节点的值赋给该节点
-			root.Right = deleteNode(root.Right, suc.Val) // 并删除该前驱节点
+			suc := successor(root)                       // 则找到它的后继节点
+			root.Val = suc.Val                           // 将前驱节点的值赋给该节点
+			root.Right = deleteNode(root.Right, suc.Val) // 并删除该后继节点
 		} else if root.Left != nil { // 若节点左儿子非空
-			pre := predecessor(root) // 则找到它的后继节点
-			root.Val = pre.Val // 将后继节点的值赋给该节点
-			root.Left = deleteNode(root.Left, pre.Val) // 并删除该后继节点
+			pre := predecessor(root)                   // 则找到它的前驱节点
+			root.Val = pre.Val                         // 将后继节点的值赋给该节点
+			root.Left = deleteNode(root.Left, pre.Val) // 并删除该前驱节点
 		} else { // 若节点为叶子节点
 			return nil // 则直接删除
 		}
