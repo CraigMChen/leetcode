@@ -2,35 +2,24 @@ package ac2
 
 // 从中心往两边扩展
 func longestPalindrome(s string) string {
-	l := len(s)
-	if l == 0 {
-		return ""
-	}
-	palindromeLen := 1
-	start, end := 0, 0
-	for i := 0; i < l; i++ {
-		for j := 0; i-j >= 0 && i+j < l; j++ {
-			if s[i-j] != s[i+j] {
-				break
-			}
-			if 2*j+1 > palindromeLen {
-				palindromeLen = 2*j + 1
-				start = i - j
-				end = i + j
-			}
+	expand := func(start, end int) (int, int) {
+		for ; start >= 0 && end < len(s) && s[start] == s[end]; start, end = start-1, end+1 {
 		}
-		if i != l-1 && s[i] == s[i+1] {
-			for j := 0; i-j >= 0 && i+j+1 < l; j++ {
-				if s[i-j] != s[i+j+1] {
-					break
-				}
-				if 2*j+2 > palindromeLen {
-					palindromeLen = 2*j + 2
-					start = i - j
-					end = i + j + 1
-				}
-			}
+		return start + 1, end - 1
+	}
+	maxLen := 0
+	res := ""
+	for i := 0; i < len(s); i++ {
+		start1, end1 := expand(i, i)
+		start2, end2 := expand(i, i+1)
+		if end1-start1+1 > maxLen {
+			maxLen = end1 - start1 + 1
+			res = s[start1 : end1+1]
+		}
+		if end2-start2+1 > maxLen {
+			maxLen = end2 - start2 + 1
+			res = s[start2 : end2+1]
 		}
 	}
-	return s[start : end+1]
+	return res
 }

@@ -38,29 +38,54 @@ package ac1
 //}
 
 // 2022.02.14
-func longestPalindrome(s string) string {
-	dp := make([][]bool, len(s))
-	for i := 0; i < len(s); i++ {
-		dp[i] = make([]bool, len(s))
-	}
+//func longestPalindrome(s string) string {
+//	dp := make([][]bool, len(s))
+//	for i := 0; i < len(s); i++ {
+//		dp[i] = make([]bool, len(s))
+//	}
+//
+//	l := 1
+//	start, end := 0, 0
+//	for i := len(s) - 1; i >= 0; i-- {
+//		for j := i; j < len(s); j++ {
+//			if i == j {
+//				dp[i][j] = true
+//			} else if j == i + 1 {
+//				dp[i][j] = s[i] == s[j]
+//			} else {
+//				dp[i][j] = dp[i+1][j-1] && s[i] == s[j]
+//			}
+//			if dp[i][j] && j - i + 1 > l {
+//				l = j - i + 1
+//				start = i
+//				end = j
+//			}
+//		}
+//	}
+//	return s[start:end+1]
+//}
 
-	l := 1
-	start, end := 0, 0
+// 2022.10.25
+// 用滚动数组优化内存
+func longestPalindrome(s string) string {
+	dp := make([]bool, len(s)+1)
+	maxLen := 0
+	res := ""
+	x := false
 	for i := len(s) - 1; i >= 0; i-- {
-		for j := i; j < len(s); j++ {
-			if i == j {
-				dp[i][j] = true
-			} else if j == i + 1 {
-				dp[i][j] = s[i] == s[j]
+		for j := i; j <= len(s); j++ {
+			tmp := dp[j]
+			if j == i || j == i+1 {
+				dp[j] = true
 			} else {
-				dp[i][j] = dp[i+1][j-1] && s[i] == s[j]
+				dp[j] = s[i] == s[j-1] && x
 			}
-			if dp[i][j] && j - i + 1 > l {
-				l = j - i + 1
-				start = i
-				end = j
+			x = tmp
+			if dp[j] && j-i > maxLen {
+				maxLen = j - i
+				res = s[i:j]
 			}
 		}
 	}
-	return s[start:end+1]
+	return res
 }
