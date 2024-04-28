@@ -2,24 +2,10 @@ package ac1
 
 func maxProfit(prices []int) int {
 	res := 0
-	min := 10001
-	for _, n := range prices {
-		res = getMax(res, n - min)
-		min = getMin(min, n)
+	least := prices[0]
+	for i := 1; i < len(prices); i++ {
+		res = max(res, prices[i]-least)
+		least = min(least, prices[i])
 	}
 	return res
-}
-
-func getMax(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func getMin(a, b int) int {
-	if a > b {
-		return b
-	}
-	return a
 }
