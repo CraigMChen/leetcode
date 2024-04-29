@@ -5,21 +5,12 @@ package ac1
 // dp[i] = max(dp[i-1]-1, nums[i])
 // 若遍历到最后一个之前dp[i]就变为0，则不能走完
 func canJump(nums []int) bool {
-	if len(nums) != 1 && nums[0] <= 0 {
-		return false
-	}
+	dp := nums[0]
 	for i := 1; i < len(nums); i++ {
-		nums[i] = max(nums[i-1]-1, nums[i])
-		if i != len(nums) - 1 && nums[i] <= 0 {
+		if dp <= 0 {
 			return false
 		}
+		dp = max(dp-1, nums[i])
 	}
 	return true
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
