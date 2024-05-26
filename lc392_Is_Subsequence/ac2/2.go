@@ -32,10 +32,35 @@ package ac2
 //}
 
 // 2022.02.16
+//func isSubsequence(s string, t string) bool {
+//	dp := make([][]int, len(t))
+//	for i := len(t) - 1; i >= 0; i-- {
+//		dp[i] = make([]int, 26)
+//		for j := 0; j < 26; j++ {
+//			if t[i] == 'a'+byte(j) {
+//				dp[i][j] = i
+//			} else if i == len(t)-1 {
+//				dp[i][j] = len(t)
+//			} else {
+//				dp[i][j] = dp[i+1][j]
+//			}
+//		}
+//	}
+//
+//	next := 0
+//	for i := 0; i < len(s); i++ {
+//		if next == len(t) || dp[next][s[i]-'a'] == len(t) {
+//			return false
+//		}
+//		next = dp[next][s[i]-'a'] + 1
+//	}
+//	return true
+//}
+
+// 2024.05.26
 func isSubsequence(s string, t string) bool {
-	dp := make([][]int, len(t))
+	dp := make([][26]int, len(t))
 	for i := len(t) - 1; i >= 0; i-- {
-		dp[i] = make([]int, 26)
 		for j := 0; j < 26; j++ {
 			if t[i] == 'a'+byte(j) {
 				dp[i][j] = i
@@ -49,7 +74,7 @@ func isSubsequence(s string, t string) bool {
 
 	next := 0
 	for i := 0; i < len(s); i++ {
-		if next == len(t) || dp[next][s[i]-'a'] == len(t) {
+		if next >= len(t) || dp[next][s[i]-'a'] >= len(t) {
 			return false
 		}
 		next = dp[next][s[i]-'a'] + 1
