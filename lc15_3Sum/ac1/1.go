@@ -5,25 +5,28 @@ import "sort"
 // 排序+双指针
 func threeSum(nums []int) [][]int {
 	sort.Ints(nums)
-	var res [][]int
-	for i := 0; i < len(nums); i++ {
+	var ans [][]int
+	for i := 0; i < len(nums)-2; i++ {
 		if i > 0 && nums[i] == nums[i-1] {
 			continue
 		}
-		for j, k := i+1, len(nums)-1; j < k; {
-			if j > i+1 && nums[j] == nums[j-1] {
-				j++
+		l, r := i+1, len(nums)-1
+		for l < r {
+			if l > i+1 && nums[l] == nums[l-1] {
+				l++
 				continue
 			}
-			if nums[i]+nums[j]+nums[k] == 0 {
-				res = append(res, []int{nums[i], nums[j], nums[k]})
-				j++
-			} else if nums[j]+nums[k] > -nums[i] {
-				k--
+			sum := nums[i] + nums[l] + nums[r]
+			if sum > 0 {
+				r--
+			} else if sum < 0 {
+				l++
 			} else {
-				j++
+				ans = append(ans, []int{nums[i], nums[l], nums[r]})
+				l++
+				r--
 			}
 		}
 	}
-	return res
+	return ans
 }
