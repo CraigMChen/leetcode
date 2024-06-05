@@ -1,28 +1,27 @@
 package ac1
 
-// 二分
+// 二分查找
+// 遍历数组 nums，对每个下标 i，利用二分查找求出最小的 j，使得 nums[i, j] 的和大于等于 target
 func minSubArrayLen(target int, nums []int) int {
-	sums := make([]int, len(nums)+1)
-	for i, n := range nums {
-		sums[i+1] = sums[i] + n
+	preSum := make([]int, len(nums)+1)
+	for i := 1; i <= len(nums); i++ {
+		preSum[i] = preSum[i-1] + nums[i-1]
 	}
-	if sums[len(nums)] < target {
-		return 0
-	}
-	ans := len(nums)
-	for i := 0; i < len(nums); i++ { // 遍历所有下标i
+	ans := 100001
+	for i := 0; i < len(nums); i++ {
 		l, r := i, len(nums)
-		for l < r { // 对于每个下标i，二分搜索求出最小的x，使得nums[x]的前缀和大于等于target
+		for l < r {
 			m := (r-l)>>1 + l
-			if sums[m+1]-sums[i] >= target {
-				if m-i+1 < ans {
-					ans = m - i + 1
-				}
-				r = m
-			} else {
+			if preSum[m+1]-preSum[i] < target {
 				l = m + 1
+			} else {
+				ans = min(ans, l-i+1)
+				r = m
 			}
 		}
+	}
+	if ans == 100001 {
+		return 0
 	}
 	return ans
 }
