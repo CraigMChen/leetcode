@@ -1,8 +1,12 @@
 package ac1
 
+// 辅助栈
+// 用一个辅助栈来保存每次 push 后的最小值
+// pop 时辅助栈也同步出栈
+
 type MinStack struct {
-	vals   []int
-	preMin []int
+	stack    []int
+	minStack []int
 }
 
 func Constructor() MinStack {
@@ -10,31 +14,22 @@ func Constructor() MinStack {
 }
 
 func (this *MinStack) Push(val int) {
-	this.vals = append(this.vals, val)
-	if len(this.preMin) == 0 {
-		this.preMin = append(this.preMin, val)
-	} else {
-		min := this.preMin[len(this.preMin)-1]
-		if val < min {
-			min = val
-		}
-		this.preMin = append(this.preMin, min)
+	this.stack = append(this.stack, val)
+	if len(this.minStack) > 0 && val > this.minStack[len(this.minStack)-1] {
+		val = this.minStack[len(this.minStack)-1]
 	}
+	this.minStack = append(this.minStack, val)
 }
 
 func (this *MinStack) Pop() {
-	if len(this.vals) == 0 {
-		return
-	}
-	n := len(this.vals)
-	this.vals = this.vals[:n-1]
-	this.preMin = this.preMin[:n-1]
+	this.stack = this.stack[:len(this.stack)-1]
+	this.minStack = this.minStack[:len(this.minStack)-1]
 }
 
 func (this *MinStack) Top() int {
-	return this.vals[len(this.vals)-1]
+	return this.stack[len(this.stack)-1]
 }
 
 func (this *MinStack) GetMin() int {
-	return this.preMin[len(this.preMin)-1]
+	return this.minStack[len(this.minStack)-1]
 }
