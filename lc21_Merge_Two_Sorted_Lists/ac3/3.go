@@ -1,7 +1,7 @@
 package ac3
 
 type ListNode struct {
-	Val int
+	Val  int
 	Next *ListNode
 }
 
@@ -21,4 +21,3 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 		return l2
 	}
 }
-
