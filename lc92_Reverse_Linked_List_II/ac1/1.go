@@ -7,7 +7,10 @@ type ListNode struct {
 
 // 反转子链表后连接头尾
 func reverseBetween(head *ListNode, left int, right int) *ListNode {
-	var parent, l, r, leftNode, rightNode *ListNode
+	// 辅助节点
+	dummyNode := &ListNode{Next: head}
+	parent := dummyNode
+	var l, r, leftNode, rightNode *ListNode
 	node := head
 	// 反转子链表
 	for i := 1; i <= right; i++ {
@@ -35,9 +38,5 @@ func reverseBetween(head *ListNode, left int, right int) *ListNode {
 	}
 	// 连接尾
 	leftNode.Next = r
-	// 特判：当 left 节点为链表第一个节点时，反转后的新链表的头结点为 right 节点
-	if l == nil {
-		return rightNode
-	}
-	return head
+	return dummyNode.Next
 }
