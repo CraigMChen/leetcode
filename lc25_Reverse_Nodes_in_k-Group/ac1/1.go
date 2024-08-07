@@ -46,3 +46,39 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	}
 	return head
 }
+
+// 2024.08.07
+//func reverseKGroup(head *ListNode, k int) *ListNode {
+//	dummyNode := &ListNode{Next: head}
+//	parent := dummyNode
+//	for node := head; node != nil; {
+//		var l, r *ListNode
+//		l, r, node = reverse(node, k)
+//		parent.Next = l
+//		parent = r
+//	}
+//	return dummyNode.Next
+//}
+//
+//func reverse(node *ListNode, k int) (*ListNode, *ListNode, *ListNode) {
+//	start := node
+//	i := 1
+//	for i < k && node.Next != nil {
+//		node = node.Next
+//		i++
+//	}
+//	end := node
+//	next := end.Next
+//	if i < k {
+//		return start, end, nil
+//	}
+//
+//	var parent *ListNode
+//	for node = start; node != next; {
+//		tmp := node.Next
+//		node.Next = parent
+//		parent = node
+//		node = tmp
+//	}
+//	return end, start, next
+//}
