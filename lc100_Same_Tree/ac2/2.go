@@ -7,26 +7,22 @@ type TreeNode struct {
 }
 
 func isSameTree(p *TreeNode, q *TreeNode) bool {
-	que1 := []*TreeNode{p}
-	que2 := []*TreeNode{q}
-	for len(que1) != 0 && len(que2) != 0 {
-		var next1, next2 []*TreeNode
-		for i := 0; i < len(que1); i++ {
-			if que1[i] == nil && que2[i] == nil {
-				continue
-			}
-			if que1[i] != nil && que2[i] != nil {
-				if que1[i].Val != que2[i].Val {
-					return false
-				}
-				next1 = append(next1, que1[i].Left, que1[i].Right)
-				next2 = append(next2, que2[i].Left, que2[i].Right)
-			} else {
-				return false
-			}
+	pQue := []*TreeNode{p}
+	qQue := []*TreeNode{q}
+	for len(pQue) > 0 && len(qQue) > 0 {
+		pNode := pQue[len(pQue)-1]
+		pQue = pQue[:len(pQue)-1]
+		qNode := qQue[len(qQue)-1]
+		qQue = qQue[:len(qQue)-1]
+		if pNode == nil && qNode == nil {
+			continue
 		}
-		que1 = next1
-		que2 = next2
+		if pNode == nil || qNode == nil ||
+			pNode.Val != qNode.Val {
+			return false
+		}
+		pQue = append(pQue, pNode.Left, pNode.Right)
+		qQue = append(qQue, qNode.Left, qNode.Right)
 	}
-	return true
+	return len(pQue) == len(qQue)
 }
