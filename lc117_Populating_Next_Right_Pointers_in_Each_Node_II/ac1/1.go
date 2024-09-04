@@ -34,3 +34,29 @@ func connect(root *Node) *Node {
 	}
 	return root
 }
+
+func connect2(root *Node) *Node {
+	var next, prior *Node
+	for node := root; node != nil; {
+		for _, n := range []*Node{node.Left, node.Right} {
+			if n == nil {
+				continue
+			}
+			if prior != nil {
+				prior.Next = n
+			}
+			if next == nil {
+				next = n
+			}
+			prior = n
+		}
+		if node.Next != nil {
+			node = node.Next
+		} else {
+			node = next
+			next = nil
+			prior = nil
+		}
+	}
+	return root
+}
