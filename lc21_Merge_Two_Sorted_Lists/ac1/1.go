@@ -1,44 +1,29 @@
 package ac1
 
 type ListNode struct {
-	Val int
+	Val  int
 	Next *ListNode
 }
 
-// 暴力
-func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
-	if l1 == nil && l2 == nil {
-		return nil
-	}
-	l := new(ListNode)
-	res := l
-	var father *ListNode
-	for l1 != nil && l2 != nil {
-		if l1.Val < l2.Val {
-			l.Val = l1.Val
-			l1 = l1.Next
+// 迭代
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+	dummyNode := &ListNode{Next: list1}
+	pre := dummyNode
+	node1, node2 := list1, list2
+	for node1 != nil && node2 != nil {
+		if node1.Val <= node2.Val {
+			pre = node1
+			node1 = node1.Next
 		} else {
-			l.Val = l2.Val
-			l2 = l2.Next
+			pre.Next = node2
+			next := node2.Next
+			node2.Next = node1
+			pre = node2
+			node2 = next
 		}
-		father = l
-		l.Next = new(ListNode)
-		l = l.Next
 	}
-	for l1 != nil {
-		l.Val = l1.Val
-		l1 = l1.Next
-		father = l
-		l.Next = new(ListNode)
-		l = l.Next
+	if node2 != nil {
+		pre.Next = node2
 	}
-	for l2 != nil {
-		l.Val = l2.Val
-		l2 = l2.Next
-		father = l
-		l.Next = new(ListNode)
-		l = l.Next
-	}
-	father.Next = nil
-	return res
+	return dummyNode.Next
 }
