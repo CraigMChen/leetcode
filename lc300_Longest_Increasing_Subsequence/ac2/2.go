@@ -1,12 +1,20 @@
 package ac2
 
 // 二分
-// 用数组 lis 表示 nums 的最长递增子序列
-// 对每个 nums[i] ，用二分查找找出能够在 lis 中插入的下标并替换
+// lis[i] 表示长度为 i+1 的最长递增子序列的末尾元素的最小值
+// 易知，lis 一定是递增的
+// 对每个 nums[i] ，用二分查找找出 lis 中第一个大于 nums[i] 的元素下标，并更新该位置为 nums[i]
 func lengthOfLIS(nums []int) int {
-	var lis []int
-	for i := 0; i < len(nums); i++ {
-		l, r := 0, len(lis)
+	lis := make([]int, len(nums))
+	lis[0] = nums[0]
+	length := 1
+	for i := 1; i < len(nums); i++ {
+		if nums[i] > lis[length-1] {
+			lis[length] = nums[i]
+			length++
+			continue
+		}
+		l, r := 0, length
 		for l < r {
 			m := (r-l)>>1 + l
 			if lis[m] < nums[i] {
@@ -15,11 +23,7 @@ func lengthOfLIS(nums []int) int {
 				r = m
 			}
 		}
-		if l == len(lis) {
-			lis = append(lis, nums[i])
-		} else {
-			lis[l] = nums[i]
-		}
+		lis[l] = nums[i]
 	}
-	return len(lis)
+	return length
 }
