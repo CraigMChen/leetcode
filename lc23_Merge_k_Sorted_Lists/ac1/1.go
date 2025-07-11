@@ -5,41 +5,43 @@ type ListNode struct {
 	Next *ListNode
 }
 
-// 每次从数组中选出最小的节点
-// 时间复杂度 O(nk)
+// 顺序合并
+// 按照顺序两两合并
+// 时间复杂度 O(n*k^2)
 // 空间复杂度 O(1)
 func mergeKLists(lists []*ListNode) *ListNode {
-	var (
-		parent, res *ListNode
-	)
-	getMinPtr := func() (*ListNode, int) {
-		var (
-			minPtr *ListNode
-			minId  int
-		)
-		for i := range lists {
-			if lists[i] == nil {
-				continue
-			}
-			if minPtr == nil || lists[i].Val < minPtr.Val {
-				minPtr = lists[i]
-				minId = i
-			}
-		}
-		return minPtr, minId
-	}
-
-	minPtr, minId := getMinPtr()
-	for minPtr != nil {
-		if parent == nil {
-			parent = minPtr
-			res = parent
-		} else {
-			parent.Next = minPtr
-			parent = minPtr
-		}
-		lists[minId] = lists[minId].Next
-		minPtr, minId = getMinPtr()
+	var res *ListNode
+	for _, list := range lists {
+		res = mergeLists(res, list)
 	}
 	return res
+}
+
+func mergeLists(root1 *ListNode, root2 *ListNode) *ListNode {
+	if root1 == nil {
+		return root2
+	}
+	if root2 == nil {
+		return root1
+	}
+
+	dummy := &ListNode{}
+	parent := dummy
+	for root1 != nil && root2 != nil {
+		if root1.Val <= root2.Val {
+			parent.Next = root1
+			root1 = root1.Next
+		} else {
+			parent.Next = root2
+			root2 = root2.Next
+		}
+		parent = parent.Next
+	}
+	if root1 != nil {
+		parent.Next = root1
+	}
+	if root2 != nil {
+		parent.Next = root2
+	}
+	return dummy.Next
 }
