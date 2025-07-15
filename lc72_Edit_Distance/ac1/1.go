@@ -23,8 +23,8 @@ package ac1
 // 可以使用滚动数组优化空间
 func minDistance(word1 string, word2 string) int {
 	dp := make([]int, len(word2)+1)
-	x := 0 // 表示 dp[i-1][j-1]
 	for i := 0; i <= len(word1); i++ {
+		x := 0 // 表示 dp[i-1][j-1]
 		for j := 0; j <= len(word2); j++ {
 			tmp := dp[j]
 			if i == 0 {
