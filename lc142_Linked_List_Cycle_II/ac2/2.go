@@ -6,34 +6,32 @@ type ListNode struct {
 }
 
 // 快慢指针
-// fast 指针每次移动 2 步，slow 指针每次移动 1 步
-// 设 fast 指针和 slow 指针移动的节点数分别为 f 和 s，入环点距离 head 长度为 a，环的长度为 b
-// 当 fast 指针和 slow 指针相遇时，有 f = s + nb
-// fast 的速度是 slow 的 2 倍，有 f = 2s
-// 根据上面两式，可以得出
-// s = nb, f = 2nb，即 slow 走了 n 圈的环，fast 走了 2n 圈的环
-// slow 指针从 head 走到入环点的距离 k = a + nb（走过距离 a 后再走 n 全都在入环点上）
-// 而此时 slow 已经走了 nb，再走长度 a 就是入环点了，a 就是要求的距离
-// 指针 ptr 从 head 开始和 slow 一起走，每次移动一步，他们相遇时 ptr 的位置就是入环点
+// fast 和 slow 指针分别从 head 开始走，slow 每次走一步，fast 每次走两步
+// 设入环点的下标为 a，相遇点的下标为 b，环的长度为 c
+// 相遇时，slow 走过的长度为 b
+// fast 走过的长度为 b + c
+// 在任意时刻，fast 走过的长度是 slow 的两倍，得 b+c=2b，即 b = c
+// 即环的长度与相遇点距离起点的长度相同
+// 从入环点出发，走 n 个完整的环，即 a + nc，一定会回到入环点
+// a + nc = a + nb
+// 相遇点已经在 b 上，从相遇点出发走长度 a 一定会到达入环点
+// 从 head 出发走长度 a 也会到达入环点
+// 那么两个指针分别从 head 和 b 开始走，他们相遇的地方就是入环点
 func detectCycle(head *ListNode) *ListNode {
-	fast, slow, ptr := head, head, head
-	for {
-		if slow == nil || fast == nil {
-			return nil
-		}
+	fast, slow, ans := head, head, head
+	for fast != nil && fast.Next != nil {
+		fast = fast.Next.Next
 		slow = slow.Next
-		fast = fast.Next
-		if fast == nil {
-			return nil
-		}
-		fast = fast.Next
-		if slow == fast {
+		if fast == slow {
 			break
 		}
 	}
-	for ptr != slow {
-		ptr = ptr.Next
+	if fast == nil || fast.Next == nil {
+		return nil
+	}
+	for ans != slow {
+		ans = ans.Next
 		slow = slow.Next
 	}
-	return ptr
+	return ans
 }
