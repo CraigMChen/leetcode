@@ -9,17 +9,8 @@ package ac1
 // 空间复杂度 O(n)
 func maxSlidingWindow(nums []int, k int) []int {
 	heap := make([][2]int, 0, len(nums))
-	for i := 0; i < k; i++ {
-		heap = append(heap, [2]int{nums[i], i})
-	}
-	for i := (k - 2) >> 1; i >= 0; i-- {
-		siftDown(heap, i)
-	}
-
 	ans := make([]int, len(nums)-k+1)
-	ans[0] = heap[0][0]
-	j := 1
-	for i := k; i < len(nums); i++ {
+	for i := 0; i < len(nums); i++ {
 		heap = append(heap, [2]int{nums[i], i})
 		siftUp(heap, len(heap)-1)
 		top := heap[0]
@@ -29,8 +20,9 @@ func maxSlidingWindow(nums []int, k int) []int {
 			siftDown(heap, 0)
 			top = heap[0]
 		}
-		ans[j] = top[0]
-		j++
+		if i >= k-1 {
+			ans[i-k+1] = top[0]
+		}
 	}
 	return ans
 }
