@@ -1,45 +1,51 @@
 package ac2
 
 // 有限状态机
-func myAtoi(s string) int {
-	table := map[string][]string{
-		"start":  {"start", "signed", "number", "end"},
-		"signed": {"end", "end", "number", "end"},
-		"number": {"end", "end", "number", "end"},
-		"end":    {"end", "end", "end", "end"},
-	}
+const (
+	START = iota
+	SIGN
+	NUMBER
+	END
+)
 
-	var ans int64 = 0
-	sign := 1
-	status := "start"
-	l := len(s)
-	for i := 0; i < l; i++ {
-		status = table[status][getCol(s[i])]
-		if status == "signed" && s[i] == '-' {
-			sign = -1
-		} else if status == "number" {
-			ans = ans*10 + int64(s[i]-'0')
-			if sign == 1 && ans > 1<<31-1 {
-				ans = 1<<31 - 1
-				break
-			} else if sign == -1 && ans > 1<<31 {
-				ans = 1 << 31
-				break
-			}
-		} else if status == "end" {
-			break
-		}
-	}
-	return int(ans) * sign
+var automaton = [3][4]int{
+	// space, operator, number, other
+	{START, SIGN, NUMBER, END}, // START
+	{END, END, NUMBER, END},    // SIGN
+	{END, END, NUMBER, END},    // NUMBER
 }
 
-func getCol(c byte) int {
-	if c == ' ' {
-		return 0
-	} else if c == '+' || c == '-' {
-		return 1
-	} else if c >= '0' && c <= '9' {
-		return 2
+func myAtoi(s string) int {
+	res := 0
+	curState := START
+	sign := 1
+	for i := 0; i < len(s); i++ {
+		if curState == END {
+			break
+		}
+		id := 0
+		switch {
+		case s[i] == ' ':
+			id = 0
+		case s[i] == '-' || s[i] == '+':
+			id = 1
+		case s[i] >= '0' && s[i] <= '9':
+			id = 2
+		default:
+			id = 3
+		}
+		curState = automaton[curState][id]
+		if curState == SIGN && s[i] == '-' {
+			sign = -1
+		}
+		if curState == NUMBER && s[i] >= '0' && s[i] <= '9' {
+			res = res*10 + int(s[i]-'0')
+			if sign == 1 && res > 1<<31-1 {
+				return 1<<31 - 1
+			} else if sign == -1 && res > 1<<31 {
+				return -1 << 31
+			}
+		}
 	}
-	return 3
+	return res * sign
 }

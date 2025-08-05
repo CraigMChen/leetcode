@@ -2,41 +2,32 @@ package ac1
 
 // 暴力模拟
 func myAtoi(s string) int {
-	var ans int64 = 0
-	l := len(s)
-	isPositive := 0
-	getNum := false
-	for i := 0; i < l; i++ {
-		if s[i] >= '0' && s[i] <= '9' {
-			ans = ans*10 + int64(s[i]-'0')
-			getNum = true
-			if ans < (-1<<31)*10 || ans > (1<<31-1)*10 {
-				break
-			}
-		} else {
-			if getNum {
-				break
-			}
-			if s[i] == '-' && isPositive == 0 {
-				getNum = true
-				isPositive = -1
-			} else if s[i] == '+' && isPositive == 0 {
-				getNum = true
-				isPositive = 1
-			} else if s[i] == ' ' {
+	res := 0
+	i := 0
+	sign := 1
+	for ; i < len(s) && s[i] == ' '; i++ {
+	}
+	for j := i; j < len(s); j++ {
+		if j == i {
+			if s[j] == '-' {
+				sign = -1
 				continue
-			} else {
-				break
+			}
+			if s[j] == '+' {
+				continue
 			}
 		}
+		if s[j] < '0' || s[j] > '9' {
+			break
+		}
+		res = res*10 + int(s[j]-'0')
+		if sign == 1 && res > 1<<31-1 {
+			res = 1<<31 - 1
+			break
+		} else if sign == -1 && res > 1<<31 {
+			res = 1 << 31
+			break
+		}
 	}
-	if isPositive != 0 {
-		ans *= int64(isPositive)
-	}
-	if ans < -1<<31 {
-		ans = -1<<31
-	} else if ans > 1<<31-1 {
-		ans = 1<<31-1
-	}
-	return int(ans)
+	return res * sign
 }

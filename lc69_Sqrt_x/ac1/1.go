@@ -1,20 +1,15 @@
 package ac1
 
+// 二分查找
 func mySqrt(x int) int {
-	l, r := 0, 1 << 16
-	ans := -1
+	l, r := 0, x+1
 	for l < r {
-		m := (r - l) / 2 + l
-		if m != 0 && m > (1 << 31 - 1) / m {
-			r = m
-		} else if m * m == x {
-			return m
-		} else if m * m < x {
-			ans = m
+		m := (r-l)>>1 + l
+		if m*m <= x {
 			l = m + 1
-		} else if m * m > x{
+		} else {
 			r = m
 		}
 	}
-	return ans
+	return l - 1
 }
