@@ -1,18 +1,10 @@
 package ac1
 
+// 动态规划
 func climbStairs(n int) int {
-	if n == 1 {
-		return 1
+	x, y := 1, 1
+	for i := 2; i <= n; i++ {
+		x, y = y, x+y
 	}
-	if n == 2 {
-		return 2
-	}
-	x, y := 1, 2
-	z := 0
-	for i := 3; i <= n; i++ {
-		z = x + y
-		x = y
-		y = z
-	}
-	return z
+	return y
 }
