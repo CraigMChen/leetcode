@@ -10,6 +10,8 @@ package ac1
 // 表示 nums[i] 这个数在数组中出现过，即 nums[nums[i]-1] = -nums[nums[i]-1]
 // 此时 nums 数组中，小于 0 的元素 nums[i] 表示数 i+1 在数组中出现过，大于 0 表示没有出现过
 // 最后再遍历一次数组，第一个出现的大于 0 的元素的下标 +1 即为答案，若所有元素都小于 0，则 n+1 为答案
+// 时间复杂度 O(n)
+// 空间复杂度 O(1)
 func firstMissingPositive(nums []int) int {
 	n := len(nums)
 	for i := 0; i < n; i++ {
