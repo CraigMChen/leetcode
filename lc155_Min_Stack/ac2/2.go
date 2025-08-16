@@ -4,7 +4,7 @@ package ac2
 // 用一个变量 minVal 维护当前最小值
 // 栈中维护入栈的值与当前最小值的差值
 // 则出栈值 vTop = top + minVal (top > 0)
-//                  = minVal (top <= 0)
+// 或 vTop = minVal (top <= 0)
 // 出栈时，若当前栈顶值 top < 0，则需更新最小值 minVal = minVal + top
 
 type MinStack struct {
