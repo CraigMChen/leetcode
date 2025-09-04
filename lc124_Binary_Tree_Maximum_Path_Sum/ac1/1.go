@@ -20,7 +20,7 @@ func maxPathSum(root *TreeNode) int {
 		right := dfs(node.Right)
 		sum := node.Val + max(0, left) + max(0, right) // 维护以当前节点为根的子树的最大路径和
 		ans = max(ans, sum)
-		return node.Val + max(0, max(left, right)) // 返回以当前节点为起点的最大路径和
+		return node.Val + max(0, left, right) // 返回以当前节点为起点的最大路径和
 	}
 	dfs(root)
 	return ans
