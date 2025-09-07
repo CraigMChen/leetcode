@@ -44,35 +44,38 @@ func newCache() *cache {
 }
 
 type LFUCache struct {
-	lfu      map[int]*cache
-	keys     map[int]*node
 	capacity int
 	minCount int
-}
-
-func (c *LFUCache) add(n *node) {
-	cache := c.lfu[n.count]
-	if cache == nil {
-		cache = newCache()
-		c.lfu[n.count] = cache
-	}
-	cache.add(n)
-}
-
-func (c *LFUCache) remove(n *node) {
-	cache := c.lfu[n.count]
-	cache.remove(n)
-	if cache.head.next == cache.tail {
-		delete(c.lfu, n.count)
-	}
+	counts   map[int]*cache
+	keys     map[int]*node
 }
 
 func Constructor(capacity int) LFUCache {
 	return LFUCache{
 		capacity: capacity,
-		lfu:      make(map[int]*cache),
+		counts:   make(map[int]*cache, capacity),
 		keys:     make(map[int]*node, capacity),
 	}
+}
+
+func (c *LFUCache) remove(n *node) {
+	cache := c.counts[n.count]
+	cache.remove(n)
+	if cache.head.next == cache.tail {
+		delete(c.counts, n.count)
+		if n.count == c.minCount {
+			c.minCount++
+		}
+	}
+}
+
+func (c *LFUCache) add(n *node) {
+	cache := c.counts[n.count]
+	if cache == nil {
+		cache = newCache()
+		c.counts[n.count] = cache
+	}
+	cache.add(n)
 }
 
 func (c *LFUCache) Get(key int) int {
@@ -82,9 +85,6 @@ func (c *LFUCache) Get(key int) int {
 	}
 
 	c.remove(n)
-	if c.lfu[n.count] == nil && n.count == c.minCount {
-		c.minCount++
-	}
 	n.count++
 	c.add(n)
 	return n.val
@@ -93,28 +93,25 @@ func (c *LFUCache) Get(key int) int {
 func (c *LFUCache) Put(key int, value int) {
 	n, ok := c.keys[key]
 	if ok {
-		n.val = value
 		c.remove(n)
-		if c.lfu[n.count] == nil && n.count == c.minCount {
-			c.minCount++
-		}
 		n.count++
+		n.val = value
 		c.add(n)
 		return
 	}
 
 	if len(c.keys) >= c.capacity {
-		cache := c.lfu[c.minCount]
-		toRemove := cache.tail.parent
-		c.remove(toRemove)
-		delete(c.keys, toRemove.key)
+		last := c.counts[c.minCount].tail.parent
+		c.remove(last)
+		delete(c.keys, last.key)
 	}
+
 	n = &node{
 		key:   key,
 		val:   value,
 		count: 1,
 	}
 	c.add(n)
-	c.keys[key] = n
 	c.minCount = 1
+	c.keys[key] = n
 }
