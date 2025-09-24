@@ -6,12 +6,14 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-// 递归
+// 自顶向上的递归
+// 时间复杂度 O(n^2)
+// 空间复杂度 O(n)
 func isBalanced(root *TreeNode) bool {
 	if root == nil {
 		return true
 	}
-	return abs(height(root.Left) - height(root.Right)) <= 1 &&
+	return abs(height(root.Left)-height(root.Right)) <= 1 &&
 		isBalanced(root.Right) && isBalanced(root.Left)
 }
 
@@ -20,13 +22,6 @@ func height(node *TreeNode) int {
 		return 0
 	}
 	return max(height(node.Left), height(node.Right)) + 1
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
 
 func abs(x int) int {

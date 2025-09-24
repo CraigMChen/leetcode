@@ -15,11 +15,32 @@ func preorderTraversal(root *TreeNode) []int {
 		for root != nil { // 前序遍历的顺序为 中 左 右
 			ans = append(ans, root.Val) // root为中节点，先遍历
 			stack = append(stack, root) // 再入栈
-			root = root.Left // 不断找左儿子
+			root = root.Left            // 不断找左儿子
 		}
 		root = stack[len(stack)-1] // 出栈
 		stack = stack[:len(stack)-1]
 		root = root.Right // 找右儿子，作为下一次循环的中节点
+	}
+	return ans
+}
+
+// 迭代2
+func preorderTraversal2(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+	var ans []int
+	stack := []*TreeNode{root}
+	for len(stack) != 0 {
+		node := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		for node != nil {
+			ans = append(ans, node.Val)
+			if node.Right != nil {
+				stack = append(stack, node.Right)
+			}
+			node = node.Left
+		}
 	}
 	return ans
 }
