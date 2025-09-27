@@ -1,6 +1,8 @@
 package ac1
 
 // 哈希表保存以每个数为最大值可以组成的最长连续子序列的长度
+// 时间复杂度 O(n)
+// 空间复杂度 O(n)
 func longestConsecutive(nums []int) int {
 	counter := make(map[int]int)
 	for i := 0; i < len(nums); i++ {

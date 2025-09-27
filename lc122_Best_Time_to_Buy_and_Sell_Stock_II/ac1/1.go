@@ -1,6 +1,9 @@
 package ac1
 
-// 求递增区间和
+// 贪心
+// 求所有递增区间和
+// 时间复杂度 O(n)
+// 空间复杂度 O(1)
 func maxProfit(prices []int) int {
 	res := 0
 	for i := 1; i < len(prices); i++ {

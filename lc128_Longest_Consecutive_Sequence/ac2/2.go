@@ -1,6 +1,8 @@
 package ac2
 
 // 哈希表保存 nums 中数字的集合
+// 时间复杂度 O(n)
+// 空间复杂度 O(n)
 func longestConsecutive(nums []int) int {
 	set := make(map[int]struct{}, len(nums))
 	for i := 0; i < len(nums); i++ {

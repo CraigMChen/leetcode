@@ -7,6 +7,8 @@ package ac2
 // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + price[i])
 // dp[i][1] = max(dp[i-1][1], dp[i-1][0] - price[i])
 // dp[len(prices)-1][0] 即为答案
+// 时间复杂度 O(n)
+// 利用了原数组空间和滚动数组优化，空间复杂度为 O(1)
 func maxProfit(prices []int) int {
 	dp0, dp1 := 0, -prices[0]
 	for i := 1; i < len(prices); i++ {
