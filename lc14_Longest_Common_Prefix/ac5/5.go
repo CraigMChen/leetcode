@@ -1,6 +1,8 @@
 package ac5
 
 // 二分查找，左闭右闭区间
+// 时间复杂度 O(mnlogm)
+// 空间复杂度 O(1)
 func longestCommonPrefix(strs []string) string {
 	isLcp := func(s string) bool {
 		for i := 0; i < len(strs); i++ {

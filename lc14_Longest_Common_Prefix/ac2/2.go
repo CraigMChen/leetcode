@@ -1,6 +1,8 @@
 package ac2
 
 // 纵向扫描
+// 时间复杂度 O(mn)
+// 空间复杂度 O(1)
 func longestCommonPrefix(strs []string) string {
 	if len(strs) == 0 {
 		return ""

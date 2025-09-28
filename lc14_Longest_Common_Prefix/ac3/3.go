@@ -1,23 +1,24 @@
 package ac3
 
 // 分治
+// 时间复杂度 O(mn)
+// 空间复杂度 O(mlogn)
 func longestCommonPrefix(strs []string) string {
-	lcp := func(a, b string) string {
-		i := 0
-		for ; i < len(a) && i < len(b) && a[i] == b[i]; i++ {
-		}
-		return a[:i]
+	if len(strs) == 1 {
+		return strs[0]
 	}
+	m := len(strs) >> 1
+	l := longestCommonPrefix(strs[:m])
+	r := longestCommonPrefix(strs[m:])
+	return lcp(l, r)
+}
 
-	var nLcp func(l, r int) string
-	nLcp = func(l, r int) string {
-		if l == r {
-			return strs[l]
-		} else if l+1 == r {
-			return lcp(strs[l], strs[r])
+func lcp(str1, str2 string) string {
+	i := 0
+	for ; i < len(str1) && i < len(str2); i++ {
+		if str1[i] != str2[i] {
+			break
 		}
-		m := (r-l)>>1 + l
-		return lcp(nLcp(l, m), nLcp(m, r))
 	}
-	return nLcp(0, len(strs)-1)
+	return str1[:i]
 }

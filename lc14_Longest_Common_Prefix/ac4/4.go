@@ -1,6 +1,9 @@
 package ac4
 
 // 二分查找，左闭右开区间
+// 直接对 [0, min(len(strs))] 范围内的数进行二分查找
+// 时间复杂度 O(mnlogm)
+// 空间复杂度 O(1)
 func longestCommonPrefix(strs []string) string {
 	isLcp := func(s string) bool {
 		for i := 0; i < len(strs); i++ {

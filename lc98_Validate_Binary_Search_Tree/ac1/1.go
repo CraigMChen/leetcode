@@ -12,6 +12,8 @@ type TreeNode struct {
 // 右子树为BST
 // 左子树中所有节点的值都小于根节点
 // 右子树中所有节点的值都大于根节点
+// 时间复杂度 O(n)
+// 空间复杂度 O(n)
 func isValidBST(root *TreeNode) bool {
 	var isValid func(root, max, min *TreeNode) bool
 	isValid = func(root, max, min *TreeNode) bool {
