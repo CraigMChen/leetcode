@@ -1,6 +1,9 @@
 package ac1
 
-// 二分
+// 二分查找
+// 对每一行进行二分查找
+// 时间复杂度 O(mlogn)
+// 空间复杂度 O(1)
 func searchMatrix(matrix [][]int, target int) bool {
 	binSearch := func(nums []int, target int) bool {
 		l, r := 0, len(nums)
@@ -16,11 +19,10 @@ func searchMatrix(matrix [][]int, target int) bool {
 		}
 		return false
 	}
-	for i := 0; i < len(matrix); i ++ {
+	for i := 0; i < len(matrix); i++ {
 		if binSearch(matrix[i], target) {
 			return true
 		}
 	}
 	return false
 }
-
